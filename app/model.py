@@ -12,3 +12,11 @@ class Car:
                 self.nome = nome
                 self.email = email
                 self.cpf = cpf
+
+        class Employee:
+            def __init__(self, login, nome, cpf, senha, nivel_atendimento):
+                self.login = login
+                self.nome = nome
+                self.cpf = cpf
+                self.senha = senha
+                self.nivel_atendimento = nivel_atendimento
