@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from app import app, db
-from app.models import Car, User, Employee, Sale
+from app.model import Car, User, Employee, Sale
 from app.controller import CarController, UserController, EmployeeController, SaleController
 from app.view import CarView, UserView, EmployeeView, SaleView
 

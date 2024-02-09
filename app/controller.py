@@ -1,5 +1,5 @@
 from app import db
-from app.models import Car, User, Employee, Sale
+from app.model import Car, User, Employee, Sale
 
 class CarController:
     def create_car(self, modelo, ano, preco, tabela_fipe, kilometragem, utilitario):
