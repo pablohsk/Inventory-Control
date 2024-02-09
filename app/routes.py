@@ -19,3 +19,9 @@ def create_car():
     data = request.get_json()
     car_id = car_controller.create_car(**data)
     return jsonify({"car_id": car_id})
+
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    data = request.get_json()
+    user_id = user_controller.create_user(**data)
+    return jsonify({"user_id": user_id})
