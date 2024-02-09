@@ -9,11 +9,11 @@ class Car(db.Model):
     kilometragem = db.Column(db.Float)
     utilitario = db.Column(db.Boolean)
 
-class User:
-    def __init__(self, nome, email, cpf):
-        self.nome = nome
-        self.email = email
-        self.cpf = cpf
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    cpf = db.Column(db.String(14), unique=True, nullable=False)
 
 class Employee:
     def __init__(self, login, nome, cpf, senha, nivel_atendimento):
