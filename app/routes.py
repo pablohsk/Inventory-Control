@@ -31,3 +31,9 @@ def create_employee():
     data = request.get_json()
     employee_id = employee_controller.create_employee(**data)
     return jsonify({"employee_id": employee_id})
+
+@app.route('/create_sale', methods=['POST'])
+def create_sale():
+    data = request.get_json()
+    sale_id = sale_controller.create_sale(**data)
+    return jsonify({"sale_id": sale_id})
