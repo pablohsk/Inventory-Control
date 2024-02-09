@@ -1,11 +1,13 @@
-class Car:
-    def __init__(self, modelo, ano, preco, tabela_fipe, kilometragem, utilitario):
-        self.modelo = modelo
-        self.ano = ano
-        self.preco = preco
-        self.tabela_fipe = tabela_fipe
-        self.kilometragem = kilometragem
-        self.utilitario = utilitario
+from app import db
+
+class Car(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    modelo = db.Column(db.String(50), nullable=False)
+    ano = db.Column(db.Integer, nullable=False)
+    preco = db.Column(db.Float, nullable=False)
+    tabela_fipe = db.Column(db.String(20))
+    kilometragem = db.Column(db.Float)
+    utilitario = db.Column(db.Boolean)
 
 class User:
     def __init__(self, nome, email, cpf):
