@@ -5,3 +5,7 @@ class CarView:
 class UserView:
     def display_user_info(self, user):
         print(f"User: {user.nome}, Email: {user.email}")
+
+class EmployeeView:
+    def display_employee_info(self, employee):
+        print(f"Employee: {employee.nome}, Level: {employee.nivel_atendimento}")
