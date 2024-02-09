@@ -25,3 +25,9 @@ def create_user():
     data = request.get_json()
     user_id = user_controller.create_user(**data)
     return jsonify({"user_id": user_id})
+
+@app.route('/create_employee', methods=['POST'])
+def create_employee():
+    data = request.get_json()
+    employee_id = employee_controller.create_employee(**data)
+    return jsonify({"employee_id": employee_id})
