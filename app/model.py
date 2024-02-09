@@ -1,30 +1,35 @@
-class Car:
-    def __init__(self, modelo, ano, preco, tabela_fipe, kilometragem, utilitario):
-        self.modelo = modelo
-        self.ano = ano
-        self.preco = preco
-        self.tabela_fipe = tabela_fipe
-        self.kilometragem = kilometragem
-        self.utilitario = utilitario
+from app import db
 
-class User:
-    def __init__(self, nome, email, cpf):
-        self.nome = nome
-        self.email = email
-        self.cpf = cpf
+class Car(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    modelo = db.Column(db.String(50), nullable=False)
+    ano = db.Column(db.Integer, nullable=False)
+    preco = db.Column(db.Float, nullable=False)
+    tabela_fipe = db.Column(db.String(20))
+    kilometragem = db.Column(db.Float)
+    utilitario = db.Column(db.Boolean)
 
-class Employee:
-    def __init__(self, login, nome, cpf, senha, nivel_atendimento):
-        self.login = login
-        self.nome = nome
-        self.cpf = cpf
-        self.senha = senha
-        self.nivel_atendimento = nivel_atendimento
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    cpf = db.Column(db.String(14), unique=True, nullable=False)
 
+class Employee(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(50), unique=True, nullable=False)
+    nome = db.Column(db.String(100), nullable=False)
+    cpf = db.Column(db.String(14), unique=True, nullable=False)
+    senha = db.Column(db.String(100), nullable=False)
+    nivel_atendimento = db.Column(db.Integer, nullable=False)
 
-class Sale:
-    def __init__(self, car, user, employee, payment_method):
-        self.car = car
-        self.user = user
-        self.employee = employee
-        self.payment_method = payment_method
+class Sale(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
+    payment_method = db.Column(db.String(20), nullable=False)
+
+    car = db.relationship('Car', backref='sales')
+    user = db.relationship('User', backref='sales')
+    employee = db.relationship('Employee', backref='sales')
