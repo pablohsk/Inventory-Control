@@ -15,3 +15,9 @@ class EmployeeController:
         employee = Employee(login, nome, cpf, senha, nivel_atendimento)
         # Lógica para adicionar ao banco de dados ou outra ação necessária
         return employee
+
+class SaleController:
+    def create_sale(self, car, user, employee, payment_method):
+        sale = Sale(car, user, employee, payment_method)
+        # Lógica para adicionar ao banco de dados ou outra ação necessária
+        return sale
