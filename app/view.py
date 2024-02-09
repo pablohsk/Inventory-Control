@@ -9,3 +9,7 @@ class UserView:
 class EmployeeView:
     def display_employee_info(self, employee):
         print(f"Employee: {employee.nome}, Level: {employee.nivel_atendimento}")
+
+class SaleView:
+    def display_sale_info(self, sale):
+        print(f"Sale: Car - {sale.car.modelo}, User - {sale.user.nome}, Payment Method - {sale.payment_method}")
