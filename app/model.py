@@ -23,9 +23,13 @@ class Employee(db.Model):
     senha = db.Column(db.String(100), nullable=False)
     nivel_atendimento = db.Column(db.Integer, nullable=False)
 
-class Sale:
-    def __init__(self, car, user, employee, payment_method):
-        self.car = car
-        self.user = user
-        self.employee = employee
-        self.payment_method = payment_method
+class Sale(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
+    payment_method = db.Column(db.String(20), nullable=False)
+
+    car = db.relationship('Car', backref='sales')
+    user = db.relationship('User', backref='sales')
+    employee = db.relationship('Employee', backref='sales')
