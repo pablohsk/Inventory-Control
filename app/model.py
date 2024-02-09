@@ -20,3 +20,10 @@ class Car:
                 self.cpf = cpf
                 self.senha = senha
                 self.nivel_atendimento = nivel_atendimento
+
+        class Sale:
+            def __init__(self, car, user, employee, payment_method):
+                self.car = car
+                self.user = user
+                self.employee = employee
+                self.payment_method = payment_method
