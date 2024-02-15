@@ -8,6 +8,29 @@ class CarController:
         db.session.commit()
         return car.id
 
+    def update_car(self, car_id, **data):
+        car = Car.query.get_or_404(car_id)
+
+        # Atualizar os campos conforme necessário
+        car.modelo = data.get('modelo', car.modelo)
+        car.ano = data.get('ano', car.ano)
+        car.preco = data.get('preco', car.preco)
+        car.tabela_fipe = data.get('tabela_fipe', car.tabela_fipe)
+        car.kilometragem = data.get('kilometragem', car.kilometragem)
+        car.utilitario = data.get('utilitario', car.utilitario)
+
+        db.session.commit()
+
+        return car.id
+
+    def delete_car(self, car_id):
+        car = Car.query.get_or_404(car_id)
+
+        db.session.delete(car)
+        db.session.commit()
+
+        return car.id
+
 class UserController:
     def create_user(self, nome, email, cpf):
         user = User(nome=nome, email=email, cpf=cpf)
