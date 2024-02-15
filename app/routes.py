@@ -75,3 +75,9 @@ def update_employee(employee_id):
 def delete_employee(employee_id):
     deleted_employee_id = employee_controller.delete_employee(employee_id)
     return jsonify({"deleted_employee_id": deleted_employee_id})
+
+@app.route('/update_sale/<int:sale_id>', methods=['PUT'])
+def update_sale(sale_id):
+    data = request.get_json()
+    updated_sale_id = sale_controller.update_sale(sale_id, **data)
+    return jsonify({"updated_sale_id": updated_sale_id})
