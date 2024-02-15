@@ -91,3 +91,16 @@ class SaleController:
         db.session.add(sale)
         db.session.commit()
         return sale.id
+
+    def update_sale(self, sale_id, **data):
+        sale = Sale.query.get_or_404(sale_id)
+
+        # Atualizar os campos conforme necessário
+        sale.car_id = data.get('car_id', sale.car_id)
+        sale.user_id = data.get('user_id', sale.user_id)
+        sale.employee_id = data.get('employee_id', sale.employee_id)
+        sale.payment_method = data.get('payment_method', sale.payment_method)
+
+        db.session.commit()
+
+        return sale.id
