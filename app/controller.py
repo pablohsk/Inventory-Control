@@ -1,7 +1,11 @@
 import re
+from flask import g, Flask
 from app import db
 from app.model import Car, User, Employee, Sale, SaleCar
 
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/site.db'
+app.app_context().push()
 
 class CarController:
     def create_car(self, modelo, ano, preco, tabela_fipe, kilometragem, utilitario):
@@ -13,7 +17,6 @@ class CarController:
     def update_car(self, car_id, **data):
         car = Car.query.get_or_404(car_id)
 
-        # Atualizar os campos conforme necessário
         car.modelo = data.get('modelo', car.modelo)
         car.ano = data.get('ano', car.ano)
         car.preco = data.get('preco', car.preco)
@@ -69,7 +72,7 @@ class EmployeeController:
             raise ValueError("Função Inválida. Use atendente ou supervisor.")
         if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', cpf):
             raise ValueError("Formato inválido para CPF. Ex: 888.777.666-55")
-        employee = Employee(login=login, nome=nome, cpf=cpf, senha=senha, nivel_atendimento=nivel_atendimento)
+        employee = Employee(login=login, nome=nome, cpf=cpf, senha=senha, nivel_atendimento=nivel_atendimento, role=role)
         db.session.add(employee)
         db.session.commit()
         return employee.id
@@ -77,7 +80,6 @@ class EmployeeController:
     def update_employee(self, employee_id, **data):
         employee = Employee.query.get_or_404(employee_id)
 
-        # Atualizar os campos conforme necessário
         employee.login = data.get('login', employee.login)
         employee.nome = data.get('nome', employee.nome)
         employee.cpf = data.get('cpf', employee.cpf)
@@ -108,6 +110,9 @@ class SaleController:
         return sale.id
 
     def update_sale(self, sale_id, **data):
+        if g.employee.role.lower() != "supervisor":
+            return {"Error": "Somente supervisores podem atualizar vendas, chame seu supervisor!"}, 403
+
         sale = Sale.query.get_or_404(sale_id)
 
         sale.car_id = data.get('car_id', sale.car_id)
@@ -120,7 +125,6 @@ class SaleController:
         return sale.id
 
     def create_sale(self, car_id, user_id, employee_id, payment_method):
-
         sale = Sale(car_id=car_id, user_id=user_id, employee_id=employee_id, payment_method=payment_method)
         db.session.add(sale)
         db.session.commit()
