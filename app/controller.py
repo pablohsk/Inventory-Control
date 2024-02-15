@@ -1,3 +1,4 @@
+import re
 from app import db
 from app.model import Car, User, Employee, Sale
 
@@ -33,6 +34,8 @@ class CarController:
 
 class UserController:
     def create_user(self, nome, email, cpf):
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', cpf):
+            raise ValueError("Formato inválido para CPF. Use xxx.xxx.xxx-xx")
         user = User(nome=nome, email=email, cpf=cpf)
         db.session.add(user)
         db.session.commit()
