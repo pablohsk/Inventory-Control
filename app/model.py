@@ -22,6 +22,7 @@ class Employee(db.Model):
     cpf = db.Column(db.String(14), unique=True, nullable=False)
     senha = db.Column(db.String(100), nullable=False)
     nivel_atendimento = db.Column(db.Integer, nullable=False)
+    role = db.Column(db.String(20), nallable=False)
 
 class Sale(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,3 +34,11 @@ class Sale(db.Model):
     car = db.relationship('Car', backref='sales')
     user = db.relationship('User', backref='sales')
     employee = db.relationship('Employee', backref='sales')
+
+class SaleCar(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sale_id = db.Column(db.Integer, db.ForeignKey('sale.id'), nullable=False, unique=True)
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
+
+    sale = db.relationship('Sale', backref='sale_cars')
+    car = db.relationship('Car', backref='sale_cars')

@@ -1,5 +1,7 @@
+import re
 from app import db
-from app.model import Car, User, Employee, Sale
+from app.model import Car, User, Employee, Sale, SaleCar
+
 
 class CarController:
     def create_car(self, modelo, ano, preco, tabela_fipe, kilometragem, utilitario):
@@ -33,6 +35,10 @@ class CarController:
 
 class UserController:
     def create_user(self, nome, email, cpf):
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', cpf):
+            raise ValueError("Formato inválido para CPF. Ex: 888.777.666-55")
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            raise ValueError("Formato inválido para e-mail. Ex: josedasilva@gmail.com")
         user = User(nome=nome, email=email, cpf=cpf)
         db.session.add(user)
         db.session.commit()
@@ -57,7 +63,12 @@ class UserController:
         return user.id
 
 class EmployeeController:
-    def create_employee(self, login, nome, cpf, senha, nivel_atendimento):
+    def create_employee(self, login, nome, cpf, senha, nivel_atendimento, role):
+        allowed_roles = ["atendente", "supervisor"]
+        if role.lower() not in allowed_roles:
+            raise ValueError("Função Inválida. Use atendente ou supervisor.")
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', cpf):
+            raise ValueError("Formato inválido para CPF. Ex: 888.777.666-55")
         employee = Employee(login=login, nome=nome, cpf=cpf, senha=senha, nivel_atendimento=nivel_atendimento)
         db.session.add(employee)
         db.session.commit()
@@ -87,6 +98,10 @@ class EmployeeController:
 
 class SaleController:
     def create_sale(self, car_id, user_id, employee_id, payment_method):
+        allowed_payment_methods = ["dinheiro", "débito", "crédito", "pix"]
+        if payment_method.lower() not in allowed_payment_methods:
+            raise ValueError("Método de pagamento inválido. Use dinheiro, débito, crédito ou pix.")
+
         sale = Sale(car_id=car_id, user_id=user_id, employee_id=employee_id, payment_method=payment_method)
         db.session.add(sale)
         db.session.commit()
@@ -95,12 +110,22 @@ class SaleController:
     def update_sale(self, sale_id, **data):
         sale = Sale.query.get_or_404(sale_id)
 
-        # Atualizar os campos conforme necessário
         sale.car_id = data.get('car_id', sale.car_id)
         sale.user_id = data.get('user_id', sale.user_id)
         sale.employee_id = data.get('employee_id', sale.employee_id)
         sale.payment_method = data.get('payment_method', sale.payment_method)
 
+        db.session.commit()
+
+        return sale.id
+
+    def create_sale(self, car_id, user_id, employee_id, payment_method):
+
+        sale = Sale(car_id=car_id, user_id=user_id, employee_id=employee_id, payment_method=payment_method)
+        db.session.add(sale)
+        db.session.commit()
+        sale_car = SaleCar(sale_id=sale.id, car_id=car_id)
+        db.session.add(sale_car)
         db.session.commit()
 
         return sale.id
