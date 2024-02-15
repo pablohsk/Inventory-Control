@@ -22,6 +22,7 @@ class Employee(db.Model):
     cpf = db.Column(db.String(14), unique=True, nullable=False)
     senha = db.Column(db.String(100), nullable=False)
     nivel_atendimento = db.Column(db.Integer, nullable=False)
+    role = db.Column(db.String(20), nallable=False)
 
 class Sale(db.Model):
     id = db.Column(db.Integer, primary_key=True)

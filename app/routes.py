@@ -4,6 +4,7 @@ from app.model import Car, User, Employee, Sale
 from app.controller import CarController, UserController, EmployeeController, SaleController
 from app.view import CarView, UserView, EmployeeView, SaleView
 from flask import render_template
+from flask import g
 
 car_controller = CarController()
 user_controller = UserController()
@@ -79,5 +80,8 @@ def delete_employee(employee_id):
 @app.route('/update_sale/<int:sale_id>', methods=['PUT'])
 def update_sale(sale_id):
     data = request.get_json()
+    if g.employee.role.lower() != "supervisor":
+        return jsonify({"Error": "Somente supervisores podem atualizar vendas, chame seu supervisor!"}), 403
+
     updated_sale_id = sale_controller.update_sale(sale_id, **data)
     return jsonify({"updated_sale_id": updated_sale_id})

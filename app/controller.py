@@ -62,7 +62,10 @@ class UserController:
         return user.id
 
 class EmployeeController:
-    def create_employee(self, login, nome, cpf, senha, nivel_atendimento):
+    def create_employee(self, login, nome, cpf, senha, nivel_atendimento, role):
+        allowed_roles = ["atendente", "supervisor"]
+        if role.lower() not in allowed_roles:
+            raise ValueError("Função Inválida. Use atendente ou supervisor.")
         if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', cpf):
             raise ValueError("Formato inválido para CPF. Ex: 888.777.666-55")
         employee = Employee(login=login, nome=nome, cpf=cpf, senha=senha, nivel_atendimento=nivel_atendimento)
