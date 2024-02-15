@@ -42,3 +42,15 @@ def create_sale():
     data = request.get_json()
     sale_id = sale_controller.create_sale(**data)
     return jsonify({"sale_id": sale_id})
+
+@app.route('/update_car/<int:car_id>', methods=['PUT'])
+def update_car(car_id):
+    data = request.get_json()
+    updated_car_id = car_controller.update_car(car_id, **data)
+    return jsonify({"updated_car_id": updated_car_id})
+
+@app.route('/delete_car/<int:car_id>', methods=['DELETE'])
+def delete_car(car_id):
+    deleted_car_id = car_controller.delete_car(car_id)
+    return jsonify({"deleted_car_id": deleted_car_id})
+
