@@ -34,3 +34,11 @@ class Sale(db.Model):
     car = db.relationship('Car', backref='sales')
     user = db.relationship('User', backref='sales')
     employee = db.relationship('Employee', backref='sales')
+
+class SaleCar(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sale_id = db.Column(db.Integer, db.ForeignKey('sale.id'), nullable=False, unique=True)
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
+
+    sale = db.relationship('Sale', backref='sale_cars')
+    car = db.relationship('Car', backref='sale_cars')

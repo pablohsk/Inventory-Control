@@ -1,6 +1,7 @@
 import re
 from app import db
-from app.model import Car, User, Employee, Sale
+from app.model import Car, User, Employee, Sale, SaleCar
+
 
 class CarController:
     def create_car(self, modelo, ano, preco, tabela_fipe, kilometragem, utilitario):
@@ -109,12 +110,22 @@ class SaleController:
     def update_sale(self, sale_id, **data):
         sale = Sale.query.get_or_404(sale_id)
 
-        # Atualizar os campos conforme necessário
         sale.car_id = data.get('car_id', sale.car_id)
         sale.user_id = data.get('user_id', sale.user_id)
         sale.employee_id = data.get('employee_id', sale.employee_id)
         sale.payment_method = data.get('payment_method', sale.payment_method)
 
+        db.session.commit()
+
+        return sale.id
+
+    def create_sale(self, car_id, user_id, employee_id, payment_method):
+
+        sale = Sale(car_id=car_id, user_id=user_id, employee_id=employee_id, payment_method=payment_method)
+        db.session.add(sale)
+        db.session.commit()
+        sale_car = SaleCar(sale_id=sale.id, car_id=car_id)
+        db.session.add(sale_car)
         db.session.commit()
 
         return sale.id
