@@ -54,3 +54,13 @@ def delete_car(car_id):
     deleted_car_id = car_controller.delete_car(car_id)
     return jsonify({"deleted_car_id": deleted_car_id})
 
+@app.route('/update_user/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    data = request.get_json()
+    updated_user_id = user_controller.update_user(user_id, **data)
+    return jsonify({"updated_user_id": updated_user_id})
+
+@app.route('/delete_user/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    deleted_user_id = user_controller.delete_user(user_id)
+    return jsonify({"deleted_user_id": deleted_user_id})
