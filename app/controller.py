@@ -63,6 +63,8 @@ class UserController:
 
 class EmployeeController:
     def create_employee(self, login, nome, cpf, senha, nivel_atendimento):
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', cpf):
+            raise ValueError("Formato inválido para CPF. Ex: 888.777.666-55")
         employee = Employee(login=login, nome=nome, cpf=cpf, senha=senha, nivel_atendimento=nivel_atendimento)
         db.session.add(employee)
         db.session.commit()
