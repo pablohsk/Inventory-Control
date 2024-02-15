@@ -35,7 +35,9 @@ class CarController:
 class UserController:
     def create_user(self, nome, email, cpf):
         if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', cpf):
-            raise ValueError("Formato inválido para CPF. Use xxx.xxx.xxx-xx")
+            raise ValueError("Formato inválido para CPF. Ex: 888.777.666-55")
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            raise ValueError("Formato inválido para e-mail. Ex: josedasilva@gmail.com")
         user = User(nome=nome, email=email, cpf=cpf)
         db.session.add(user)
         db.session.commit()
