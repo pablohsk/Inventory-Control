@@ -38,6 +38,24 @@ class UserController:
         db.session.commit()
         return user.id
 
+    def update_user(self, user_id, **data):
+        user = User.query.get_or_404(user_id)
+        user.nome = data.get('nome', user.nome)
+        user.email = data.get('email', user.email)
+        user.cpf = data.get('cpf', user.cpf)
+
+        db.session.commit()
+
+        return user.id
+
+    def delete_user(self, user_id):
+        user = User.query.get_or_404(user_id)
+
+        db.session.delete(user)
+        db.session.commit()
+
+        return user.id
+
 class EmployeeController:
     def create_employee(self, login, nome, cpf, senha, nivel_atendimento):
         employee = Employee(login=login, nome=nome, cpf=cpf, senha=senha, nivel_atendimento=nivel_atendimento)
