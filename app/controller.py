@@ -63,6 +63,28 @@ class EmployeeController:
         db.session.commit()
         return employee.id
 
+    def update_employee(self, employee_id, **data):
+        employee = Employee.query.get_or_404(employee_id)
+
+        # Atualizar os campos conforme necessário
+        employee.login = data.get('login', employee.login)
+        employee.nome = data.get('nome', employee.nome)
+        employee.cpf = data.get('cpf', employee.cpf)
+        employee.senha = data.get('senha', employee.senha)
+        employee.nivel_atendimento = data.get('nivel_atendimento', employee.nivel_atendimento)
+
+        db.session.commit()
+
+        return employee.id
+
+    def delete_employee(self, employee_id):
+        employee = Employee.query.get_or_404(employee_id)
+
+        db.session.delete(employee)
+        db.session.commit()
+
+        return employee.id
+
 class SaleController:
     def create_sale(self, car_id, user_id, employee_id, payment_method):
         sale = Sale(car_id=car_id, user_id=user_id, employee_id=employee_id, payment_method=payment_method)
