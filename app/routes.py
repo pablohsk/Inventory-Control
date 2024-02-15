@@ -1,10 +1,16 @@
-from flask import request, jsonify
-from app import app, db
-from app.model import Car, User, Employee, Sale
+from flask import Blueprint, request, jsonify, render_template, g, Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from app.controller import CarController, UserController, EmployeeController, SaleController
 from app.view import CarView, UserView, EmployeeView, SaleView
-from flask import render_template
-from flask import g
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+with app.app_context():
+    db.create_all()
 
 car_controller = CarController()
 user_controller = UserController()
@@ -16,7 +22,9 @@ user_view = UserView()
 employee_view = EmployeeView()
 sale_view = SaleView()
 
-@app.route
+main_bp = Blueprint('main', __name__)
+
+@app.route('/')
 def index():
     return render_template('index.html')
 
@@ -85,3 +93,11 @@ def update_sale(sale_id):
 
     updated_sale_id = sale_controller.update_sale(sale_id, **data)
     return jsonify({"updated_sale_id": updated_sale_id})
+
+app.register_blueprint(main_bp)
+
+with app.app_context():
+    db.create_all()
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -1,13 +1,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app import routes
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-if __name__ == '_main__':
-    with app.app_context():
-        db.create_all()
+from app.routes import main_bp
+app.register_blueprint(main_bp)
 
-    app.run(debug=True)
+from app.model import Car, User, Employee, Sale, SaleCar
+
+with app.app_context():
+    db.create_all()
