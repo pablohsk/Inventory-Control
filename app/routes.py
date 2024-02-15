@@ -3,6 +3,7 @@ from app import app, db
 from app.model import Car, User, Employee, Sale
 from app.controller import CarController, UserController, EmployeeController, SaleController
 from app.view import CarView, UserView, EmployeeView, SaleView
+from flask import render_template
 
 car_controller = CarController()
 user_controller = UserController()
@@ -13,6 +14,10 @@ car_view = CarView()
 user_view = UserView()
 employee_view = EmployeeView()
 sale_view = SaleView()
+
+@app.route
+def index():
+    return render_template('index.html')
 
 @app.route('/create_car', methods=['POST'])
 def create_car():
