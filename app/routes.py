@@ -64,3 +64,14 @@ def update_user(user_id):
 def delete_user(user_id):
     deleted_user_id = user_controller.delete_user(user_id)
     return jsonify({"deleted_user_id": deleted_user_id})
+
+@app.route('/update_employee/<int:employee_id>', methods=['PUT'])
+def update_employee(employee_id):
+    data = request.get_json()
+    updated_employee_id = employee_controller.update_employee(employee_id, **data)
+    return jsonify({"updated_employee_id": updated_employee_id})
+
+@app.route('/delete_employee/<int:employee_id>', methods=['DELETE'])
+def delete_employee(employee_id):
+    deleted_employee_id = employee_controller.delete_employee(employee_id)
+    return jsonify({"deleted_employee_id": deleted_employee_id})
