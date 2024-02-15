@@ -94,6 +94,10 @@ class EmployeeController:
 
 class SaleController:
     def create_sale(self, car_id, user_id, employee_id, payment_method):
+        allowed_payment_methods = ["dinheiro", "débito", "crédito", "pix"]
+        if payment_method.lower() not in allowed_payment_methods:
+            raise ValueError("Método de pagamento inválido. Use dinheiro, débito, crédito ou pix.")
+
         sale = Sale(car_id=car_id, user_id=user_id, employee_id=employee_id, payment_method=payment_method)
         db.session.add(sale)
         db.session.commit()
